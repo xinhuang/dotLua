@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotLua", "dotLua\dotLua.csproj", "{743219CA-C77F-40B9-9797-C2C8F98AABEA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo", "Demo\Demo.csproj", "{926A1C59-3E0B-499B-A998-C3442F0D970F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,16 @@ Global
 		{743219CA-C77F-40B9-9797-C2C8F98AABEA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{743219CA-C77F-40B9-9797-C2C8F98AABEA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{743219CA-C77F-40B9-9797-C2C8F98AABEA}.Release|Win32.ActiveCfg = Release|Any CPU
+		{926A1C59-3E0B-499B-A998-C3442F0D970F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{926A1C59-3E0B-499B-A998-C3442F0D970F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{926A1C59-3E0B-499B-A998-C3442F0D970F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{926A1C59-3E0B-499B-A998-C3442F0D970F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{926A1C59-3E0B-499B-A998-C3442F0D970F}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{926A1C59-3E0B-499B-A998-C3442F0D970F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{926A1C59-3E0B-499B-A998-C3442F0D970F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{926A1C59-3E0B-499B-A998-C3442F0D970F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{926A1C59-3E0B-499B-A998-C3442F0D970F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{926A1C59-3E0B-499B-A998-C3442F0D970F}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,4 @@
 *.opensdf
 *.sdf
-/dotLua/obj
-/dotLua/bin
+obj
+bin
