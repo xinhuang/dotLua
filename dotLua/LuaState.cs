@@ -11,6 +11,11 @@ namespace dotLua
         private readonly IntPtr _luaState = luaL_newstate();
         private const int MultiReturn = -1;
 
+        public void OpenLibs()
+        {
+            luaL_openlibs(_luaState);
+        }
+
         public int Load(string filename)
         {
             return luaL_loadfile(_luaState, filename);
@@ -37,6 +42,9 @@ namespace dotLua
 
         [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern int lua_pcallk(IntPtr luaState, int nArgs, int nRet, int errFunc, int context, LuaCFunction hook);
+
+        [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern int lua_getglobal(IntPtr luaState, string name);
 
         private static int luaL_loadfile(IntPtr luaState, string filename)
         {
@@ -77,5 +85,11 @@ namespace dotLua
         }
 
         #endregion
+
+        public int Call(string functionName)
+        {
+            lua_getglobal(_luaState, functionName);
+            return lua_pcall(_luaState, 0, 0, 0);
+        }
     }
 }
