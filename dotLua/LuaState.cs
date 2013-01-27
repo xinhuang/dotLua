@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 using lua_Number = System.Double;
@@ -111,16 +110,5 @@ namespace dotLua
         }
 
         #endregion
-    }
-
-    static class EnumerableExtention
-    {
-        public static void ForEach<T>(this IEnumerable<T> self, Action<T> action)
-        {
-            foreach (T value in self)
-            {
-                action(value);
-            }
-        }
     }
 }
