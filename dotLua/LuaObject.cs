@@ -16,10 +16,7 @@ namespace dotLua
 
         public override bool TryInvoke(InvokeBinder binder, object[] args, out object result)
         {
-            if (args.Length > 0)
-                throw new NotImplementedException("Lua function with arguments is not supported.");
-
-            result = _lua.Invoke(_binder.Name);
+            result = _lua.Invoke(_binder.Name, args);
             return true;
         }
     }

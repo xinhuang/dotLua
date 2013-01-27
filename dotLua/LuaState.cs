@@ -15,6 +15,11 @@ namespace dotLua
             luaL_openlibs(_luaState);
         }
 
+        public int Call(string functionName, dynamic[] arg0)
+        {
+            return 0;
+        }
+
         public int Load(string filename)
         {
             return luaL_loadfile(_luaState, filename);
@@ -23,6 +28,12 @@ namespace dotLua
         public int Do(string filename)
         {
             return luaL_dofile(_luaState, filename);
+        }
+
+        public int Call(string functionName)
+        {
+            lua_getglobal(_luaState, functionName);
+            return lua_pcall(_luaState, 0, 0, 0);
         }
 
         #region Imported Lua Functions
@@ -84,11 +95,5 @@ namespace dotLua
         }
 
         #endregion
-
-        public int Call(string functionName)
-        {
-            lua_getglobal(_luaState, functionName);
-            return lua_pcall(_luaState, 0, 0, 0);
-        }
     }
 }

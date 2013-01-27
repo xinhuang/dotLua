@@ -36,6 +36,15 @@ namespace dotLua
             return null;
         }
 
+        public dynamic Invoke(string functionName, object[] args)
+        {
+            if (_luaState.Call(functionName, args) != 0)
+                throw new InvocationException("Error when invoking " + functionName);
+            return null;
+        }
+
+        #region IDisposable
+
         public void Dispose()
         {
             Dispose(true);
@@ -55,5 +64,7 @@ namespace dotLua
         {
             Dispose(false);
         }
+
+        #endregion
     }
 }

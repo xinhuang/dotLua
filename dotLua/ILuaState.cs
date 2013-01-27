@@ -4,8 +4,10 @@ namespace dotLua
 {
     public interface ILuaState : IDisposable
     {
-        int Call(string functionName);
-        int Do(string filename);
         void OpenLibs();
+        int Do(string filename);
+
+        int Call(string functionName);
+        int Call(string functionName, dynamic[] arg0);
     }
 }
