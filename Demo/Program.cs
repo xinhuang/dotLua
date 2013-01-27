@@ -18,6 +18,7 @@ namespace Demo
                 try
                 {
                     lua.raise("Boom!");
+                    Console.WriteLine("Error: Lua error should be converted to an exception!");
                 }
                 catch (InvocationException e)
                 {

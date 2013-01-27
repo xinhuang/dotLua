@@ -7,7 +7,7 @@ namespace dotLuaTest
     [TestClass]
     public class Lua_CallingFunction
     {
-        private Mock<ILuaState> _mockLuaState = new Mock<ILuaState>();
+        private readonly Mock<ILuaState> _mockLuaState = new Mock<ILuaState>();
         private dynamic _sut;
 
         [TestInitialize]
@@ -39,7 +39,7 @@ namespace dotLuaTest
         [TestMethod, ExpectedException(typeof(InvocationException))]
         public void given_lua_pcall_return_non_zero_should_throw_invocation_exception()
         {
-            _mockLuaState.Setup(o => o.Call(It.IsAny<string>(), It.IsAny<object[]>()))
+            _mockLuaState.Setup(o => o.Call("Error", It.IsAny<object[]>()))
                 .Returns(LuaError.Runtime);
 
             _sut.Error();
