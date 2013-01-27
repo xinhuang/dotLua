@@ -5,6 +5,7 @@ dotLua is a Lua wrapper for C# utilizing C# 4.0 dynamic class.
 Example
 ======
 test.lua:
+
 	function say_hi(...)
 		if ... ~= nil then
 			message = "Hi"
@@ -22,6 +23,7 @@ test.lua:
 	end
 
 In C#:
+
 	using (dynamic lua = new Lua())
 	{
 			lua.Do("test.lua");
