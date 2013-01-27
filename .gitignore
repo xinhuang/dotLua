@@ -2,3 +2,5 @@
 *.sdf
 obj
 bin
+
+*.user

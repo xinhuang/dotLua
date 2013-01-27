@@ -7,7 +7,6 @@ namespace dotLua
         void OpenLibs();
         int Do(string filename);
 
-        int Call(string functionName);
-        int Call(string functionName, dynamic[] arg0);
+        int Call(string functionName, dynamic[] args);
     }
 }

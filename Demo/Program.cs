@@ -1,5 +1,4 @@
-﻿using System;
-using dotLua;
+﻿using dotLua;
 
 namespace Demo
 {
@@ -11,6 +10,7 @@ namespace Demo
             {
                 lua.Do("test.lua");
                 lua.say_hi();
+                lua.say_hi("dotLua");
             }
         }
     }

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using lua_Number = System.Double;
 
 namespace dotLua
 {
@@ -15,8 +17,11 @@ namespace dotLua
             luaL_openlibs(_luaState);
         }
 
-        public int Call(string functionName, dynamic[] arg0)
+        public int Call(string functionName, dynamic[] args)
         {
+            lua_getglobal(_luaState, functionName);
+            args.ForEach(arg => Push(arg));
+            lua_pcall(_luaState, args.Length, 0, 0);
             return 0;
         }
 
@@ -30,10 +35,14 @@ namespace dotLua
             return luaL_dofile(_luaState, filename);
         }
 
-        public int Call(string functionName)
+        private void Push(double value)
         {
-            lua_getglobal(_luaState, functionName);
-            return lua_pcall(_luaState, 0, 0, 0);
+            lua_pushnumber(_luaState, value);
+        }
+
+        private void Push(string value)
+        {
+            lua_pushstring(_luaState, value);
         }
 
         #region Imported Lua Functions
@@ -55,6 +64,12 @@ namespace dotLua
 
         [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern int lua_getglobal(IntPtr luaState, string name);
+
+        [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void lua_pushnumber(IntPtr luaState, lua_Number value);
+
+        [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void lua_pushstring(IntPtr luaState, string value);
 
         private static int luaL_loadfile(IntPtr luaState, string filename)
         {
@@ -95,5 +110,16 @@ namespace dotLua
         }
 
         #endregion
+    }
+
+    static class EnumerableExtention
+    {
+        public static void ForEach<T>(this IEnumerable<T> self, Action<T> action)
+        {
+            foreach (T value in self)
+            {
+                action(value);
+            }
+        }
     }
 }

@@ -29,14 +29,7 @@ namespace dotLua
             return true;
         }
 
-        public dynamic Invoke(string functionName)
-        {
-            if (_luaState.Call(functionName) != 0)
-                throw new InvocationException("Error when invoking " + functionName);
-            return null;
-        }
-
-        public dynamic Invoke(string functionName, object[] args)
+        public dynamic Invoke(string functionName, dynamic[] args)
         {
             if (_luaState.Call(functionName, args) != 0)
                 throw new InvocationException("Error when invoking " + functionName);
