@@ -35,5 +35,14 @@ namespace dotLuaTest
                                              It.Is<object[]>(args => args.Length == 1 && (int) args[0] == 1)
                                           ), Times.Exactly(1));
         }
+
+        [TestMethod, ExpectedException(typeof(InvocationException))]
+        public void given_lua_pcall_return_non_zero_should_throw_invocation_exception()
+        {
+            _mockLuaState.Setup(o => o.Call(It.IsAny<string>(), It.IsAny<object[]>()))
+                .Returns(1);
+
+            _sut.Error();
+        }
     }
 }
