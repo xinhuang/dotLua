@@ -39,6 +39,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DotLuaException.cs" />
+    <Compile Include="ILuaState.cs" />
+    <Compile Include="InvocationException.cs" />
+    <Compile Include="Lua.cs" />
+    <Compile Include="LuaObject.cs" />
     <Compile Include="LuaState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -7,17 +7,10 @@ namespace Demo
     {
         static void Main(string[] args)
         {
-            using (var luaState = new LuaState())
+            using (dynamic lua = new Lua())
             {
-                luaState.OpenLibs();
-                if (luaState.Do("test.lua") != 0)
-                {
-                    Console.WriteLine("Load file test.lua failed.");
-                }
-                if (luaState.Call("say_hi") != 0)
-                {
-                    Console.WriteLine("Calling function say_hi failed.");
-                }
+                lua.Do("test.lua");
+                lua.say_hi();
             }
         }
     }

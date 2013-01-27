@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotLua", "dotLua\dotLua.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo", "Demo\Demo.csproj", "{926A1C59-3E0B-499B-A998-C3442F0D970F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotLuaTest", "dotLuaTest\dotLuaTest.csproj", "{9E4D081D-7443-4B53-97A3-10D098489091}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,16 @@ Global
 		{926A1C59-3E0B-499B-A998-C3442F0D970F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{926A1C59-3E0B-499B-A998-C3442F0D970F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{926A1C59-3E0B-499B-A998-C3442F0D970F}.Release|Win32.ActiveCfg = Release|Any CPU
+		{9E4D081D-7443-4B53-97A3-10D098489091}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E4D081D-7443-4B53-97A3-10D098489091}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E4D081D-7443-4B53-97A3-10D098489091}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9E4D081D-7443-4B53-97A3-10D098489091}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9E4D081D-7443-4B53-97A3-10D098489091}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{9E4D081D-7443-4B53-97A3-10D098489091}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E4D081D-7443-4B53-97A3-10D098489091}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E4D081D-7443-4B53-97A3-10D098489091}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9E4D081D-7443-4B53-97A3-10D098489091}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{9E4D081D-7443-4B53-97A3-10D098489091}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

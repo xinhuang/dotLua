@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace dotLua
 {
-    public class LuaState : IDisposable
+    class LuaState : ILuaState
     {
         private delegate int LuaCFunction(IntPtr luaState);
 
