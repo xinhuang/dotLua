@@ -23,8 +23,7 @@ namespace dotLua
         {
             lua_getglobal(_luaState, functionName);
             args.ForEach(arg => Push(arg));
-            lua_pcall(_luaState, args.Length, 0, 0);
-            return 0;
+            return lua_pcall(_luaState, args.Length, 0, 0);
         }
 
         public LuaError Load(string filename)

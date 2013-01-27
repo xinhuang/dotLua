@@ -31,8 +31,9 @@ namespace dotLua
 
         public dynamic Invoke(string functionName, dynamic[] args)
         {
-            if (_luaState.Call(functionName, args) != LuaError.Ok)
-                throw new InvocationException("Error when invoking " + functionName);
+            LuaError error = _luaState.Call(functionName, args);
+            if (error != LuaError.Ok)
+                throw new InvocationException(error, functionName);
             return null;
         }
 

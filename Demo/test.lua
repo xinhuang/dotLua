@@ -9,3 +9,7 @@
 		print("Hi from Lua")
 	end
 end
+
+function raise(message)
+	error(message)
+end

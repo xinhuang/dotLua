@@ -1,4 +1,5 @@
-﻿using dotLua;
+﻿using System;
+using dotLua;
 
 namespace Demo
 {
@@ -13,6 +14,15 @@ namespace Demo
                 lua.say_hi("dotLua");
                 lua.say_hi(3.1415926);
                 lua.say_hi(3.1415926, "dotLua", "Sunday");
+
+                try
+                {
+                    lua.raise("Boom!");
+                }
+                catch (InvocationException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
         }
     }
