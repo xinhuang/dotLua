@@ -11,6 +11,8 @@ namespace Demo
                 lua.Do("test.lua");
                 lua.say_hi();
                 lua.say_hi("dotLua");
+                lua.say_hi(3.1415926);
+                lua.say_hi(3.1415926, "dotLua", "Sunday");
             }
         }
     }

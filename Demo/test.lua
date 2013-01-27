@@ -1,6 +1,10 @@
-﻿function say_hi(name)
-	if name ~= nil then
-		print("Hi, " .. name)
+﻿function say_hi(...)
+	if ... ~= nil then
+		message = "Hi"
+		for _, v in pairs({...}) do
+			message = message .. ", " .. v
+		end
+		print(message)
 	else
 		print("Hi from Lua")
 	end
