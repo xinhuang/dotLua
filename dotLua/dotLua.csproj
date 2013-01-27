@@ -43,6 +43,7 @@
     <Compile Include="ILuaState.cs" />
     <Compile Include="InvocationException.cs" />
     <Compile Include="Lua.cs" />
+    <Compile Include="LuaError.cs" />
     <Compile Include="LuaObject.cs" />
     <Compile Include="LuaState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

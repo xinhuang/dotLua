@@ -5,8 +5,8 @@ namespace dotLua
     public interface ILuaState : IDisposable
     {
         void OpenLibs();
-        int Do(string filename);
+        LuaError Do(string filename);
 
-        int Call(string functionName, dynamic[] args);
+        LuaError Call(string functionName, dynamic[] args);
     }
 }

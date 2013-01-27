@@ -40,7 +40,7 @@ namespace dotLuaTest
         public void given_lua_pcall_return_non_zero_should_throw_invocation_exception()
         {
             _mockLuaState.Setup(o => o.Call(It.IsAny<string>(), It.IsAny<object[]>()))
-                .Returns(1);
+                .Returns(LuaError.Runtime);
 
             _sut.Error();
         }

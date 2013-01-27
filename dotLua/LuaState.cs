@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+
 using lua_Number = System.Double;
 
 namespace dotLua
@@ -10,6 +11,7 @@ namespace dotLua
         private delegate int LuaCFunction(IntPtr luaState);
 
         private readonly IntPtr _luaState = luaL_newstate();
+
         private const int MultiReturn = -1;
 
         public void OpenLibs()
@@ -17,7 +19,7 @@ namespace dotLua
             luaL_openlibs(_luaState);
         }
 
-        public int Call(string functionName, dynamic[] args)
+        public LuaError Call(string functionName, dynamic[] args)
         {
             lua_getglobal(_luaState, functionName);
             args.ForEach(arg => Push(arg));
@@ -25,12 +27,12 @@ namespace dotLua
             return 0;
         }
 
-        public int Load(string filename)
+        public LuaError Load(string filename)
         {
             return luaL_loadfile(_luaState, filename);
         }
 
-        public int Do(string filename)
+        public LuaError Do(string filename)
         {
             return luaL_dofile(_luaState, filename);
         }
@@ -57,13 +59,13 @@ namespace dotLua
         private static extern void luaL_openlibs(IntPtr luaState);
 
         [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern int luaL_loadfilex(IntPtr luaState, string filename, string mode);
+        private static extern LuaError luaL_loadfilex(IntPtr luaState, string filename, string mode);
 
         [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern int lua_pcallk(IntPtr luaState, int nArgs, int nRet, int errFunc, int context, LuaCFunction hook);
+        private static extern LuaError lua_pcallk(IntPtr luaState, int nArgs, int nRet, int errFunc, int context, LuaCFunction hook);
 
         [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern int lua_getglobal(IntPtr luaState, string name);
+        private static extern LuaError lua_getglobal(IntPtr luaState, string name);
 
         [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void lua_pushnumber(IntPtr luaState, lua_Number value);
@@ -71,20 +73,20 @@ namespace dotLua
         [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void lua_pushstring(IntPtr luaState, string value);
 
-        private static int luaL_loadfile(IntPtr luaState, string filename)
+        private static LuaError luaL_loadfile(IntPtr luaState, string filename)
         {
             return luaL_loadfilex(luaState, filename, null);
         }
 
-        private static int luaL_dofile(IntPtr luaState, string filename)
+        private static LuaError luaL_dofile(IntPtr luaState, string filename)
         {
-            int err = luaL_loadfile(luaState, filename);
+            LuaError err = luaL_loadfile(luaState, filename);
             if (err != 0)
                 return err;
             return lua_pcall(luaState, 0, LuaState.MultiReturn, 0);
         }
 
-        private static int lua_pcall(IntPtr luaState, int nArgs, int nRet, int errFunc)
+        private static LuaError lua_pcall(IntPtr luaState, int nArgs, int nRet, int errFunc)
         {
             return lua_pcallk(luaState, nArgs, nRet, errFunc, 0, null);
         }
