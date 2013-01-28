@@ -9,12 +9,6 @@ namespace dotLua
         private readonly GetMemberBinder _binder;
         private readonly LuaType _type;
 
-        private  LuaObject(Lua lua, GetMemberBinder binder)
-        {
-            _lua = lua;
-            _binder = binder;
-        }
-
         public LuaObject(Lua lua, GetMemberBinder binder, LuaType type)
         {
             _lua = lua;

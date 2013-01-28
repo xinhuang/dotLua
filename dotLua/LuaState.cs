@@ -32,13 +32,15 @@ namespace dotLua
 
         public Tuple<LuaType, object> GetField(string name)
         {
-            throw new NotImplementedException();
+            var type = TypeOf(name);
+            lua_getglobal(_luaState, name);
+            return new Tuple<LuaType, object>(type, lua_tonumber(_luaState, -1));
         }
 
         public LuaType TypeOf(string name)
         {
             lua_getglobal(_luaState, name);
-            return lua_type(_luaState, 0);
+            return lua_type(_luaState, -1);
         }
 
         public LuaError Load(string filename)
@@ -90,6 +92,9 @@ namespace dotLua
         [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern LuaType lua_type(IntPtr luaState, int index);
 
+        [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern lua_Number lua_tonumberx(IntPtr luaState, int index, out bool isNum);
+
         private static LuaError luaL_loadfile(IntPtr luaState, string filename)
         {
             return luaL_loadfilex(luaState, filename, null);
@@ -106,6 +111,12 @@ namespace dotLua
         private static LuaError lua_pcall(IntPtr luaState, int nArgs, int nRet, int errFunc)
         {
             return lua_pcallk(luaState, nArgs, nRet, errFunc, 0, null);
+        }
+
+        private static lua_Number lua_tonumber(IntPtr luaState, int index)
+        {
+            bool isNumber;
+            return lua_tonumberx(luaState, index, out isNumber);
         }
 
         #endregion

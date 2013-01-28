@@ -13,3 +13,5 @@ end
 function raise(message)
 	error(message)
 end
+
+GlobalValue = 3
