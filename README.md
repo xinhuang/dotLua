@@ -26,20 +26,23 @@ In C#:
 
 	using (dynamic lua = new Lua())
 	{
-			lua.Do("test.lua");
-			lua.say_hi();
-			lua.say_hi("dotLua");
-			lua.say_hi(3.1415926);
-			lua.say_hi(3.1415926, "dotLua", "Sunday");
+		lua.Do("test.lua");
+		lua.say_hi();
+		lua.say_hi("dotLua");
+		lua.say_hi(3.1415926);
+		lua.say_hi(3.1415926, "dotLua", "Sunday");
 
-			try
-			{
-				lua.raise("Boom!");
-			}
-			catch (InvocationException e)
-			{
-				Console.WriteLine(e.Message);
-			}
+		Console.WriteLine("Global Value: {0}", (double)lua.GlobalValue);
+
+		try
+		{
+			lua.raise("Boom!");
+			Console.WriteLine("Error: Lua error should be converted to an exception!");
+		}
+		catch (InvocationException e)
+		{
+			Console.WriteLine(e.Message);
+		}
 	}
 
 License
