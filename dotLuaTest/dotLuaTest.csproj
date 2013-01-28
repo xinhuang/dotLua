@@ -54,6 +54,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="LuaTestBase.cs" />
+    <Compile Include="Lua_AccessVariable.cs" />
     <Compile Include="Lua_CallingFunction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

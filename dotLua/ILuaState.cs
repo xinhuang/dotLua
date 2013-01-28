@@ -8,5 +8,7 @@ namespace dotLua
         LuaError Do(string filename);
 
         LuaError Call(string functionName, dynamic[] args);
+        Tuple<LuaType, object> GetField(string name);
+        LuaType TypeOf(string name);
     }
 }

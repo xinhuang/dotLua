@@ -1,6 +1,6 @@
 ﻿namespace dotLua
 {
-    public enum LuaError : uint
+    public enum LuaError
     {
         Ok = 0,
         Yield = 1,

@@ -13,6 +13,11 @@ namespace dotLua
 
         private const int MultiReturn = -1;
 
+        public static Type NumberType
+        {
+            get { return typeof (lua_Number); }
+        }
+
         public void OpenLibs()
         {
             luaL_openlibs(_luaState);
@@ -23,6 +28,17 @@ namespace dotLua
             lua_getglobal(_luaState, functionName);
             args.ForEach(arg => Push(arg));
             return lua_pcall(_luaState, args.Length, 0, 0);
+        }
+
+        public Tuple<LuaType, object> GetField(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public LuaType TypeOf(string name)
+        {
+            lua_getglobal(_luaState, name);
+            return lua_type(_luaState, 0);
         }
 
         public LuaError Load(string filename)
@@ -70,6 +86,9 @@ namespace dotLua
 
         [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void lua_pushstring(IntPtr luaState, string value);
+
+        [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern LuaType lua_type(IntPtr luaState, int index);
 
         private static LuaError luaL_loadfile(IntPtr luaState, string filename)
         {

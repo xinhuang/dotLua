@@ -25,7 +25,7 @@ namespace dotLua
 
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            result = new LuaObject(this, binder);
+            result = new LuaObject(this, binder, _luaState.TypeOf(binder.Name));
             return true;
         }
 
@@ -35,6 +35,21 @@ namespace dotLua
             if (error != LuaError.Ok)
                 throw new InvocationException(error, functionName);
             return null;
+        }
+
+        public object TryGet(string name, Type type)
+        {
+            return _luaState.GetField(name).Item1;
+        }
+        
+        public double GetDouble(string name)
+        {
+            return (double)_luaState.GetField(name).Item2;
+        }
+
+        public int GetInt(string name)
+        {
+            return (int)_luaState.GetField(name).Item2;
         }
 
         #region IDisposable
