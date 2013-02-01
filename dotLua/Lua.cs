@@ -7,7 +7,7 @@ namespace dotLua
     {
         private readonly ILuaState _luaState;
 
-        public Lua() 
+        public Lua()
             : this(new LuaState())
         {
         }
@@ -29,18 +29,26 @@ namespace dotLua
 
             switch (type)
             {
-            case LuaType.Number:
-                result = _luaState.GetField(binder.Name).Item2;
-                break;
+                case LuaType.Number:
+                    result = _luaState.GetField(binder.Name).Item2;
+                    break;
 
-            case LuaType.Function:
-                result = new LuaFunction(this, binder);
-                break;
-
-            default:
-                throw new NotImplementedException(string.Format("Lua object {0} of type {1} is not supported.",
-                                                                binder.Name, type));
+                default:
+                    throw new NotImplementedException(string.Format("Lua object {0} of type {1} is not supported.",
+                                                                    binder.Name, type));
             }
+            return true;
+        }
+
+        public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
+        {
+            if (_luaState.TypeOf(binder.Name) != LuaType.Function)
+            {
+                result = null;
+                return false;
+            }
+
+            result = Invoke(binder.Name, args);
             return true;
         }
 
@@ -56,7 +64,7 @@ namespace dotLua
         {
             return _luaState.GetField(name).Item1;
         }
-        
+
         public double GetDouble(string name)
         {
             return (double)_luaState.GetField(name).Item2;
