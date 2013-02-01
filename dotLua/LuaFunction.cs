@@ -3,27 +3,17 @@ using System.Dynamic;
 
 namespace dotLua
 {
-    public class LuaObject : DynamicObject
+    public class LuaFunction : DynamicObject
     {
         private readonly Lua _lua;
         private readonly GetMemberBinder _binder;
         private readonly LuaType _type;
 
-        public LuaObject(Lua lua, GetMemberBinder binder, LuaType type)
+        public LuaFunction(Lua lua, GetMemberBinder binder, LuaType type)
         {
             _lua = lua;
             _binder = binder;
             _type = type;
-        }
-
-        public static implicit operator double(LuaObject value)
-        {
-            return value._lua.GetDouble(value._binder.Name);
-        }
-
-        public static implicit operator int(LuaObject value)
-        {
-            return value._lua.GetInt(value._binder.Name);
         }
 
         public override bool TryInvoke(InvokeBinder binder, object[] args, out object result)

@@ -25,7 +25,10 @@ namespace dotLua
 
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            result = new LuaObject(this, binder, _luaState.TypeOf(binder.Name));
+            if (_luaState.TypeOf(binder.Name) == LuaType.Number)
+                result = _luaState.GetField(binder.Name).Item2;
+            else
+                result = new LuaFunction(this, binder, _luaState.TypeOf(binder.Name));
             return true;
         }
 
