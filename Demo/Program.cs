@@ -15,7 +15,7 @@ namespace Demo
                 lua.say_hi(3.1415926);
                 lua.say_hi(3.1415926, "dotLua", "Sunday");
 
-                Console.WriteLine("Global Value: {0}", (double)lua.GlobalValue);
+                Console.WriteLine("Global Value: {0}", lua.GlobalValue);
 
                 try
                 {

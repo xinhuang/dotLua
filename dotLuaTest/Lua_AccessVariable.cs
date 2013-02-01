@@ -8,7 +8,7 @@ namespace dotLuaTest
     public class Lua_AccessVariable : LuaTestBase
     {
         [TestMethod]
-        public void given_access_query_int_field_for_int_should_return_currect_value()
+        public void given_access_query_double_field_for_int_should_return_currect_value()
         {
             const int expect = 42;
             _mockLuaState.Setup(o => o.GetField("IntField"))
