@@ -29,6 +29,7 @@ namespace dotLua
 
             switch (type)
             {
+                case LuaType.String:
                 case LuaType.Number:
                     result = _luaState.GetField(binder.Name).Item2;
                     break;
