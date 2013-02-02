@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Dynamic;
+using System.IO;
 
 namespace dotLua
 {
@@ -20,7 +21,9 @@ namespace dotLua
 
         public void Do(string filename)
         {
-            _luaState.Do(filename);
+            LuaError error = _luaState.Do(filename);
+            if (error != LuaError.Ok)
+                throw new FileLoadException(error.ToString());
         }
 
         public override bool TryGetMember(GetMemberBinder binder, out object result)

@@ -15,7 +15,10 @@ namespace Demo
                 lua.say_hi(3.1415926);
                 lua.say_hi(3.1415926, "dotLua", "Sunday");
 
-                Console.WriteLine("Global Value: {0}", lua.GlobalValue);
+                Console.WriteLine("Global Value: {0}", lua.GlobalNumber);
+                Assert.AreEqual(3, lua.GlobalNumber);
+                Console.WriteLine("Global Value: {0}", lua.GlobalString);
+                Assert.AreEqual("Good luck~", lua.GlobalString);
 
                 try
                 {

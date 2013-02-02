@@ -14,4 +14,5 @@ function raise(message)
 	error(message)
 end
 
-GlobalValue = 3
+GlobalNumber = 3
+GlobalString = "Good luck~"
