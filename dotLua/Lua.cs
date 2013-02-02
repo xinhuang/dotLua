@@ -64,21 +64,6 @@ namespace dotLua
             return null;
         }
 
-        public object TryGet(string name, Type type)
-        {
-            return _luaState.GetField(name).Item1;
-        }
-
-        public double GetDouble(string name)
-        {
-            return (double)_luaState.GetField(name).Item2;
-        }
-
-        public int GetInt(string name)
-        {
-            return (int)_luaState.GetField(name).Item2;
-        }
-
         #region IDisposable
 
         public void Dispose()
