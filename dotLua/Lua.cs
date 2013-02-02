@@ -25,18 +25,18 @@ namespace dotLua
 
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            LuaType type = _luaState.TypeOf(binder.Name);
+            Tuple<LuaType, object> field = _luaState.GetField(binder.Name);
 
-            switch (type)
+            switch (field.Item1)
             {
                 case LuaType.String:
                 case LuaType.Number:
-                    result = _luaState.GetField(binder.Name).Item2;
+                result = field.Item2;
                     break;
 
                 default:
                     throw new NotImplementedException(string.Format("Lua object {0} of type {1} is not supported.",
-                                                                    binder.Name, type));
+                                                                    binder.Name, field.Item1));
             }
             return true;
         }
