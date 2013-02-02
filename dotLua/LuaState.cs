@@ -31,7 +31,7 @@ namespace dotLua
 
             lua_getglobal(_luaState, functionName);
             args.ForEach(arg => Push(arg));
-            LuaError error = lua_pcall(_luaState, args.Length, 0, 0);
+            LuaError error = lua_pcall(_luaState, args.Length, MultiReturn, 0);
             if (error != LuaError.Ok)
                 throw new InvocationException(error, functionName);
 

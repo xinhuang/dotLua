@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using dotLua;
 
 namespace Demo
@@ -20,6 +21,10 @@ namespace Demo
                 Console.WriteLine("Global Value: {0}", lua.GlobalString);
                 Assert.AreEqual("Good luck~", lua.GlobalString);
                 Assert.IsTrue(lua.GlobalBoolean);
+
+                IList<dynamic> result0 = lua.return_0();
+                Assert.AreEqual(1, result0.Count);
+                Assert.AreEqual(0, result0[0]);
 
                 try
                 {

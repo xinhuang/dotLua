@@ -14,6 +14,10 @@ function raise(message)
 	error(message)
 end
 
+function return_0()
+	return 0
+end
+
 GlobalNumber = 3
 GlobalString = "Good luck~"
 GlobalBoolean = true
