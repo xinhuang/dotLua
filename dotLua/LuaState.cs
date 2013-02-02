@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 using lua_Number = System.Double;
@@ -23,11 +25,30 @@ namespace dotLua
             luaL_openlibs(_luaState);
         }
 
-        public LuaError Call(string functionName, dynamic[] args)
+        public IList<dynamic> Call(string functionName, dynamic[] args)
         {
+            int before = lua_gettop(_luaState);
+
             lua_getglobal(_luaState, functionName);
             args.ForEach(arg => Push(arg));
-            return lua_pcall(_luaState, args.Length, 0, 0);
+            LuaError error = lua_pcall(_luaState, args.Length, 0, 0);
+            if (error != LuaError.Ok)
+                throw new InvocationException(error, functionName);
+
+            int after = lua_gettop(_luaState);
+
+            int nArgs = after - before;
+            var results = new List<dynamic>(nArgs);
+            Enumerable.Range(0, nArgs).ForEach(i => results.Add(StackAt(i)));
+
+            lua_settop(_luaState, before);
+            return results;
+        }
+
+        private dynamic StackAt(int index)
+        {
+            LuaType type = lua_type(_luaState, index);
+            return type.GetValue(this, index);
         }
 
         public Tuple<LuaType, object> GetField(string name)
@@ -97,6 +118,12 @@ namespace dotLua
 
         [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern LuaError lua_getglobal(IntPtr luaState, string name);
+
+        [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern int lua_gettop(IntPtr luaState);
+
+        [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern int lua_settop(IntPtr luaState, int index);
 
         [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void lua_pushnumber(IntPtr luaState, lua_Number value);

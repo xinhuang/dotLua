@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace dotLua
 {
@@ -7,7 +8,7 @@ namespace dotLua
         void OpenLibs();
         LuaError Do(string filename);
 
-        LuaError Call(string functionName, dynamic[] args);
+        IList<dynamic> Call(string functionName, dynamic[] args);
         Tuple<LuaType, object> GetField(string name);
         LuaType TypeOf(string name);
 

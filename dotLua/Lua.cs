@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
 
@@ -57,12 +58,9 @@ namespace dotLua
             return true;
         }
 
-        public dynamic Invoke(string functionName, dynamic[] args)
+        public dynamic Invoke(string functionName, object[] args)
         {
-            LuaError error = _luaState.Call(functionName, args);
-            if (error != LuaError.Ok)
-                throw new InvocationException(error, functionName);
-            return null;
+            return _luaState.Call(functionName, args);
         }
 
         #region IDisposable

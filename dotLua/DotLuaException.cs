@@ -8,5 +8,9 @@ namespace dotLua
             : base(message)
         {
         }
+
+        protected DotLuaException()
+        {
+        }
     }
 }

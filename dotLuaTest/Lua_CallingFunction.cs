@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using dotLua;
 
@@ -36,9 +38,22 @@ namespace dotLuaTest
         {
             _mockLuaState.Setup(o => o.TypeOf("Error")).Returns(LuaType.Function);
             _mockLuaState.Setup(o => o.Call("Error", It.IsAny<object[]>()))
-                .Returns(LuaError.Runtime);
+                .Throws(new InvocationException());
 
             _sut.Error();
+        }
+
+        [TestMethod]
+        public void given_calling_lua_function_return_a_string_should_correct_result_received()
+        {
+            _mockLuaState.Setup(o => o.TypeOf("Foo")).Returns(LuaType.Function);
+            _mockLuaState.Setup(o => o.Call("Foo", It.IsAny<object[]>()))
+                         .Returns(new List<dynamic> { "expect" });
+
+            IList<dynamic> actual = _sut.Foo();
+
+            Assert.AreEqual(1, actual.Count);
+            Assert.AreEqual("expect", actual[0]);
         }
     }
 }
