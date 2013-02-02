@@ -1,6 +1,6 @@
 dotLua
 ======
-dotLua is a Lua wrapper for C# utilizing C# 4.0 dynamic class.
+dotLua is a Lua 5.2 binder for C# utilizing C# 4.0 dynamic class, by interop with Lua native C DLL. 
 
 Example
 ======
@@ -22,7 +22,9 @@ test.lua:
 		error(message)
 	end
 
-	GlobalValue = 3
+	GlobalNumber = 3
+	GlobalString = "Good luck~"
+	GlobalBoolean = true
 
 In C#:
 
@@ -34,7 +36,8 @@ In C#:
 		lua.say_hi(3.1415926);
 		lua.say_hi(3.1415926, "dotLua", "Sunday");
 
-		Console.WriteLine("Global Value: {0}", lua.GlobalValue);
+		Console.WriteLine("Global Value: {0}", lua.GlobalNumber);
+		Console.WriteLine("Global Value: {0}", lua.GlobalString);
 
 		try
 		{
@@ -50,12 +53,13 @@ In C#:
 Features
 ======
 * Calling a static function defined in a Lua script.
-* Getting a global number defined in a Lua script.
+* Getting a global number/string/boolean field defined in a Lua script.
 
 TO DO
 ======
-* Handling return value from a static Lua function.
 * Getting other types of global values in a Lua script.
+* Handling return value from a static Lua function.
+* Calling methods of a Lua object. (Defined in metatable)
 * Register a C# delegate to be called from a Lua script.
 * Other Lua feature support.
 
