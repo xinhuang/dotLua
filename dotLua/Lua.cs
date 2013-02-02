@@ -54,13 +54,8 @@ namespace dotLua
                 return false;
             }
 
-            result = Invoke(binder.Name, args);
+            result = _luaState.Call(binder.Name, args);
             return true;
-        }
-
-        public dynamic Invoke(string functionName, object[] args)
-        {
-            return _luaState.Call(functionName, args);
         }
 
         #region IDisposable

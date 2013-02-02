@@ -45,10 +45,16 @@ namespace dotLua
             List<dynamic> results = null;
             if (nArgs > 0)
             {
-                results = new List<dynamic>(nArgs);
-                Enumerable.Range(before + 1, nArgs).ForEach(i => results.Add(StackAt(i)));
+                results = GetStackRange(before, nArgs);
                 lua_settop(_luaState, before);
             }
+            return results;
+        }
+
+        private List<dynamic> GetStackRange(int index, int n)
+        {
+            var results = new List<dynamic>(n);
+            Enumerable.Range(index + 1, n).ForEach(i => results.Add(StackAt(i)));
             return results;
         }
 
@@ -60,8 +66,8 @@ namespace dotLua
 
         public Tuple<LuaType, object> GetField(string name)
         {
-            var type = TypeOf(name);
             lua_getglobal(_luaState, name);
+            LuaType type = lua_type(_luaState, -1);
             var result = new Tuple<LuaType, object>(type, type.GetValue(this, -1));
             lua_pop(_luaState, 1);
             return result;
@@ -195,6 +201,10 @@ namespace dotLua
 
         public void Dispose()
         {
+#if DEBUG
+            int top = lua_gettop(_luaState);
+            Debug.Assert(top == 0, string.Format("Unbalanced stack: {0}", top));
+#endif
             Dispose(true);
         }
 
