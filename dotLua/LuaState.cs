@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -33,7 +34,10 @@ namespace dotLua
             args.ForEach(arg => Push(arg));
             LuaError error = lua_pcall(_luaState, args.Length, MultiReturn, 0);
             if (error != LuaError.Ok)
+            {
+                lua_settop(_luaState, before);
                 throw new InvocationException(error, functionName);
+            }
 
             int after = lua_gettop(_luaState);
 
@@ -58,13 +62,17 @@ namespace dotLua
         {
             var type = TypeOf(name);
             lua_getglobal(_luaState, name);
-            return new Tuple<LuaType, object>(type, type.GetValue(this, -1));
+            var result = new Tuple<LuaType, object>(type, type.GetValue(this, -1));
+            lua_pop(_luaState, 1);
+            return result;
         }
 
         public LuaType TypeOf(string name)
         {
             lua_getglobal(_luaState, name);
-            return lua_type(_luaState, -1);
+            LuaType type = lua_type(_luaState, -1);
+            lua_pop(_luaState, 1);
+            return type;
         }
 
         public bool ToBoolean(int index)
@@ -174,6 +182,11 @@ namespace dotLua
         {
             int length;
             return Marshal.PtrToStringAnsi(lua_tolstring(luaState, index, out length));
+        }
+
+        private void lua_pop(IntPtr luaState, int n)
+        {
+            lua_settop(luaState, -n - 1);
         }
 
         #endregion
