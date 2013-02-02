@@ -19,6 +19,7 @@ namespace Demo
                 Assert.AreEqual(3, lua.GlobalNumber);
                 Console.WriteLine("Global Value: {0}", lua.GlobalString);
                 Assert.AreEqual("Good luck~", lua.GlobalString);
+                Assert.IsTrue(lua.GlobalBoolean);
 
                 try
                 {

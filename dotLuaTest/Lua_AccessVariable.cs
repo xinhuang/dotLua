@@ -26,6 +26,16 @@ namespace dotLuaTest
             Assert.AreEqual(expect, _sut.StringField);
         }
 
+        [TestMethod]
+        public void given_query_global_boolean_field_should_return_currect_value()
+        {
+            const bool expect = true;
+
+            SetupField("BooleanField", LuaType.Boolean, expect);
+
+            Assert.AreEqual(expect, _sut.BooleanField);
+        }
+
         private void SetupField<T>(string fieldName, LuaType expectType, T expect)
         {
             _mockLuaState.Setup(o => o.GetField(fieldName))

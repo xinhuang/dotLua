@@ -32,12 +32,13 @@ namespace dotLua
 
             switch (field.Item1)
             {
-                case LuaType.String:
-                case LuaType.Number:
+            case LuaType.String:
+            case LuaType.Number:
+            case LuaType.Boolean:
                 result = field.Item2;
                     break;
 
-                default:
+            default:
                     throw new NotImplementedException(string.Format("Lua object {0} of type {1} is not supported.",
                                                                     binder.Name, field.Item1));
             }

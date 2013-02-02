@@ -20,5 +20,10 @@ namespace Demo
         {
             return Math.Abs(expect - actual) < double.Epsilon;
         }
+
+        public static void IsTrue(bool actual)
+        {
+            Assert.AreEqual(true, actual);
+        }
     }
 }

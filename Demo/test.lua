@@ -16,3 +16,4 @@ end
 
 GlobalNumber = 3
 GlobalString = "Good luck~"
+GlobalBoolean = true
