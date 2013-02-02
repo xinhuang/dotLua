@@ -25,6 +25,10 @@ test.lua:
 	GlobalNumber = 3
 	GlobalString = "Good luck~"
 	GlobalBoolean = true
+	
+	function return_0_str()
+		return 0, "Hi~"
+	end
 
 In C#:
 
@@ -38,6 +42,11 @@ In C#:
 
 		Console.WriteLine("Global Value: {0}", lua.GlobalNumber);
 		Console.WriteLine("Global Value: {0}", lua.GlobalString);
+		
+		IList<dynamic> result0str = lua.return_0_str();
+		Assert.AreEqual(2, result0str.Count);
+		Assert.AreEqual(0, result0str[0]);
+		Assert.AreEqual("Hi~", result0str[1]);
 
 		try
 		{
@@ -52,13 +61,12 @@ In C#:
 	
 Features
 ======
-* Calling a static function defined in a Lua script.
+* Calling a static function defined in a Lua script and acquiring results.
 * Getting a global number/string/boolean field defined in a Lua script.
 
 TO DO
 ======
-* Getting other types of global values in a Lua script.
-* Handling return value from a static Lua function.
+* Getting other Lua primitive types of global values in a Lua script.
 * Calling methods of a Lua object. (Defined in metatable)
 * Register a C# delegate to be called from a Lua script.
 * Other Lua feature support.
