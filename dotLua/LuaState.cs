@@ -34,13 +34,28 @@ namespace dotLua
         {
             var type = TypeOf(name);
             lua_getglobal(_luaState, name);
-            return new Tuple<LuaType, object>(type, lua_tonumber(_luaState, -1));
+            return new Tuple<LuaType, object>(type, type.GetValue(this, -1));
         }
 
         public LuaType TypeOf(string name)
         {
             lua_getglobal(_luaState, name);
             return lua_type(_luaState, -1);
+        }
+
+        public bool ToBoolean(int index)
+        {
+            return lua_toboolean(_luaState, index) != 0;
+        }
+
+        public double ToNumber(int index)
+        {
+            return lua_tonumber(_luaState, index);
+        }
+
+        public string ToString(int index)
+        {
+            return lua_tostring(_luaState, index);
         }
 
         public LuaError Load(string filename)
@@ -95,6 +110,12 @@ namespace dotLua
         [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern lua_Number lua_tonumberx(IntPtr luaState, int index, out bool isNum);
 
+        [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr lua_tolstring(IntPtr luaState, int index, out int length);
+
+        [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern int lua_toboolean(IntPtr luaState, int index);
+
         private static LuaError luaL_loadfile(IntPtr luaState, string filename)
         {
             return luaL_loadfilex(luaState, filename, null);
@@ -117,6 +138,12 @@ namespace dotLua
         {
             bool isNumber;
             return lua_tonumberx(luaState, index, out isNumber);
+        }
+
+        private string lua_tostring(IntPtr luaState, int index)
+        {
+            int length;
+            return Marshal.PtrToStringAnsi(lua_tolstring(luaState, index, out length));
         }
 
         #endregion

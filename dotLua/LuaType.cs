@@ -1,4 +1,6 @@
-﻿namespace dotLua
+﻿using System;
+
+namespace dotLua
 {
     public enum LuaType
     {
@@ -12,5 +14,26 @@
         Function = 6,
         UserData = 7,
         Thread = 8,
+    }
+
+    public static class LuaTypeMethods
+    {
+        public static dynamic GetValue(this LuaType self, ILuaState luaState, int index)
+        {
+            switch (self)
+            {
+            case LuaType.Boolean:
+                return luaState.ToBoolean(index);
+
+            case LuaType.Number:
+                return luaState.ToNumber(index);
+
+            case LuaType.String:
+                return luaState.ToString(index);
+
+            default:
+                throw new NotImplementedException(string.Format("Try get {0} of type {1}", index, self));
+            }
+        }
     }
 }
