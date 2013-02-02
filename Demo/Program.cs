@@ -26,10 +26,20 @@ namespace Demo
                 Assert.AreEqual(1, result0.Count);
                 Assert.AreEqual(0, result0[0]);
 
+                IList<dynamic> result01 = lua.return_0_1();
+                Assert.AreEqual(2, result01.Count);
+                Assert.AreEqual(0, result01[0]);
+                Assert.AreEqual(1, result01[1]);
+
+                IList<dynamic> result0str = lua.return_0_str();
+                Assert.AreEqual(2, result0str.Count);
+                Assert.AreEqual(0, result0str[0]);
+                Assert.AreEqual("Hi~", result0str[1]);
+
                 try
                 {
                     lua.raise("Boom!");
-                    Console.WriteLine("Error: Lua error should be converted to an exception!");
+                    throw new Exception();
                 }
                 catch (InvocationException e)
                 {

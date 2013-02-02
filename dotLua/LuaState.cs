@@ -38,10 +38,13 @@ namespace dotLua
             int after = lua_gettop(_luaState);
 
             int nArgs = after - before;
-            var results = new List<dynamic>(nArgs);
-            Enumerable.Range(0, nArgs).ForEach(i => results.Add(StackAt(i)));
-
-            lua_settop(_luaState, before);
+            List<dynamic> results = null;
+            if (nArgs > 0)
+            {
+                results = new List<dynamic>(nArgs);
+                Enumerable.Range(before + 1, nArgs).ForEach(i => results.Add(StackAt(i)));
+                lua_settop(_luaState, before);
+            }
             return results;
         }
 
