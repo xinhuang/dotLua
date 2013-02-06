@@ -58,12 +58,16 @@
     <Compile Include="Lua_AccessVariable.cs" />
     <Compile Include="Lua_CallingFunction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="LuaIntegrationTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\dotLua\dotLua.csproj">
       <Project>{743219ca-c77f-40b9-9797-c2c8f98aabea}</Project>
       <Name>dotLua</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="test.lua" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
