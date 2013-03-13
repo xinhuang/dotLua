@@ -1,20 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.InteropServices;
-
 using lua_Number = System.Double;
 
 namespace dotLua
 {
-    class LuaState : ILuaState
+    internal class LuaState : ILuaState
     {
-        private delegate int LuaCFunction(IntPtr luaState);
-
+        public const int MultiReturn = -1;
         private readonly IntPtr _luaState = luaL_newstate();
-
-        private const int MultiReturn = -1;
 
         public static Type NumberType
         {
@@ -26,39 +20,17 @@ namespace dotLua
             luaL_openlibs(_luaState);
         }
 
-        public IList<dynamic> Call(string functionName, dynamic[] args)
+        public int GetTop()
         {
-            int before = lua_gettop(_luaState);
-
-            lua_getglobal(_luaState, functionName);
-            args.ForEach(arg => Push(arg));
-            LuaError error = lua_pcall(_luaState, args.Length, MultiReturn, 0);
-            if (error != LuaError.Ok)
-            {
-                lua_settop(_luaState, before);
-                throw new InvocationException(error, functionName);
-            }
-
-            int after = lua_gettop(_luaState);
-
-            int nArgs = after - before;
-            List<dynamic> results = null;
-            if (nArgs > 0)
-            {
-                results = GetStackRange(before, nArgs);
-                lua_settop(_luaState, before);
-            }
-            return results;
+            return lua_gettop(_luaState);
         }
 
-        private List<dynamic> GetStackRange(int index, int n)
+        public void GetGlobal(string name)
         {
-            var results = new List<dynamic>(n);
-            Enumerable.Range(index + 1, n).ForEach(i => results.Add(StackAt(i)));
-            return results;
+            lua_getglobal(_luaState, name);
         }
 
-        private dynamic StackAt(int index)
+        public dynamic StackAt(int index)
         {
             LuaType type = lua_type(_luaState, index);
             return type.GetValue(this, index);
@@ -96,24 +68,29 @@ namespace dotLua
             return lua_tostring(_luaState, index);
         }
 
-        public LuaError Load(string filename)
-        {
-            return luaL_loadfile(_luaState, filename);
-        }
-
         public LuaError Do(string filename)
         {
             return luaL_dofile(_luaState, filename);
         }
 
-        private void Push(double value)
+        public void Push(double value)
         {
             lua_pushnumber(_luaState, value);
         }
 
-        private void Push(string value)
+        public void Push(string value)
         {
             lua_pushstring(_luaState, value);
+        }
+
+        public LuaError PCall(int nArgs, int multiReturn, int errFunc)
+        {
+            return lua_pcall(_luaState, nArgs, multiReturn, errFunc);
+        }
+
+        public void SetTop(int index)
+        {
+            lua_settop(_luaState, index);
         }
 
         #region Imported Lua Functions
@@ -131,7 +108,8 @@ namespace dotLua
         private static extern LuaError luaL_loadfilex(IntPtr luaState, string filename, string mode);
 
         [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern LuaError lua_pcallk(IntPtr luaState, int nArgs, int nRet, int errFunc, int context, LuaCFunction hook);
+        private static extern LuaError lua_pcallk(IntPtr luaState, int nArgs, int nRet, int errFunc, int context,
+                                                  LuaCFunction hook);
 
         [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern LuaError lua_getglobal(IntPtr luaState, string name);
@@ -170,7 +148,7 @@ namespace dotLua
             LuaError err = luaL_loadfile(luaState, filename);
             if (err != 0)
                 return err;
-            return lua_pcall(luaState, 0, LuaState.MultiReturn, 0);
+            return lua_pcall(luaState, 0, MultiReturn, 0);
         }
 
         private static LuaError lua_pcall(IntPtr luaState, int nArgs, int nRet, int errFunc)
@@ -203,14 +181,17 @@ namespace dotLua
         {
 #if DEBUG
             int top = lua_gettop(_luaState);
-            Debug.Assert(top == 0, string.Format("Unbalanced stack: {0}", top));
+            Debug.Assert(top == 0, string.Format("Unbalanced Lua stack: {0}", top));
 #endif
             Dispose(true);
         }
 
         private void Dispose(bool isDisposing)
         {
-            lua_close(_luaState);
+            if (isDisposing)
+            {
+                lua_close(_luaState);
+            }
             GC.SuppressFinalize(this);
         }
 
@@ -220,5 +201,12 @@ namespace dotLua
         }
 
         #endregion
+
+        public LuaError Load(string filename)
+        {
+            return luaL_loadfile(_luaState, filename);
+        }
+
+        private delegate int LuaCFunction(IntPtr luaState);
     }
 }

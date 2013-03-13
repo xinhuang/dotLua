@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
+using System.Linq;
 
 namespace dotLua
 {
@@ -37,11 +38,11 @@ namespace dotLua
             case LuaType.Number:
             case LuaType.Boolean:
                 result = field.Item2;
-                    break;
+                break;
 
             default:
-                    throw new NotImplementedException(string.Format("Lua object {0} of type {1} is not supported.",
-                                                                    binder.Name, field.Item1));
+                throw new NotImplementedException(string.Format("Lua object {0} of type {1} is not supported.",
+                                                                binder.Name, field.Item1));
             }
             return true;
         }
@@ -54,8 +55,54 @@ namespace dotLua
                 return false;
             }
 
-            result = _luaState.Call(binder.Name, args);
+            result = Call(binder.Name, args);
             return true;
+        }
+
+        private IList<dynamic> Call(string functionName, dynamic[] args)
+        {
+            int bottom = _luaState.GetTop();
+
+            try
+            {
+                RawCall(functionName, args);
+                return GetResults(bottom);
+            }
+            finally
+            {
+                _luaState.SetTop(bottom);
+            }
+        }
+
+        private IList<dynamic> GetResults(int bottom)
+        {
+            int top = _luaState.GetTop();
+
+            int nArgs = top - bottom;
+            List<dynamic> results = null;
+            if (nArgs > 0)
+            {
+                results = GetStackRange(bottom, nArgs);
+            }
+            return results;
+        }
+
+        private void RawCall(string functionName, dynamic[] args)
+        {
+            _luaState.GetGlobal(functionName);
+            args.ForEach(arg => _luaState.Push(arg));
+            LuaError error = _luaState.PCall(args.Length, LuaState.MultiReturn, 0);
+            if (error != LuaError.Ok)
+            {
+                throw new InvocationException(error, functionName);
+            }
+        }
+
+        private List<dynamic> GetStackRange(int index, int n)
+        {
+            var results = new List<dynamic>(n);
+            Enumerable.Range(index + 1, n).ForEach(i => results.Add(_luaState.StackAt(i)));
+            return results;
         }
 
         #region IDisposable

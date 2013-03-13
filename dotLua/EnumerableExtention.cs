@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace dotLua
 {
-    static class EnumerableExtention
+    internal static class EnumerableExtention
     {
         public static void ForEach<T>(this IEnumerable<T> self, Action<T> action)
         {

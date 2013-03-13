@@ -88,10 +88,10 @@ namespace dotLuaTest
             Assert.AreEqual("Hi~", result0str[1]);
         }
 
-        [TestMethod, ExpectedException(typeof(InvocationException))]
+        [TestMethod, ExpectedException(typeof (InvocationException))]
         public void given_lua_script_execute_error_should_throw_invocation_exception()
         {
             _sut.raise("Boom!");
         }
-    } 
+    }
 }

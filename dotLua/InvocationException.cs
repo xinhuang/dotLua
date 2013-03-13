@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace dotLua
+﻿namespace dotLua
 {
     public class InvocationException : DotLuaException
     {
