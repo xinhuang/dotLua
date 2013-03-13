@@ -181,7 +181,8 @@ namespace dotLua
         {
 #if DEBUG
             int top = lua_gettop(_luaState);
-            Debug.Assert(top == 0, string.Format("Unbalanced Lua stack: {0}", top));
+            if(top != 0)
+                throw new UnbalanceStackException(top);
 #endif
             Dispose(true);
         }
