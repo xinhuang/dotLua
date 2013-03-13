@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using lua_Number = System.Double;
 
@@ -73,7 +72,7 @@ namespace dotLua
             return luaL_dofile(_luaState, filename);
         }
 
-        public void Push(double value)
+        public void Push(lua_Number value)
         {
             lua_pushnumber(_luaState, value);
         }
