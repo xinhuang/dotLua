@@ -54,5 +54,21 @@ namespace dotLuaTest
             Assert.AreEqual(1, actual.Count);
             Assert.AreEqual("expect", actual[0]);
         }
+
+        [TestMethod]
+        public void given_calling_lua_function_with_1_argument_return_a_string_should_correct_result_received()
+        {
+            _mockLuaState.Setup(o => o.TypeOf(FunctionName)).Returns(LuaType.Function);
+            int top = 0;
+            _mockLuaState.Setup(o => o.GetTop()).Returns(() => top);
+            _mockLuaState.Setup(o => o.PCall(1, LuaState.MultiReturn, 0)).Returns(LuaError.Ok).Callback(() => top = 1);
+            _mockLuaState.Setup(o => o.StackAt(1)).Returns("expect");
+
+            IList<dynamic> actual = _sut.Foo(12);
+
+            _mockLuaState.Verify(o => o.GetGlobal(FunctionName), Times.Exactly(1));
+            Assert.AreEqual(1, actual.Count);
+            Assert.AreEqual("expect", actual[0]);
+        }
     }
 }
