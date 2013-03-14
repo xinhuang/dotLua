@@ -34,7 +34,7 @@ namespace dotLuaTest
         public void given_lua_pcall_return_non_zero_should_throw_invocation_exception()
         {
             _mockLuaState.Setup(o => o.TypeOf("Error")).Returns(LuaType.Function);
-            _mockLuaState.Setup(o => o.PCall(0, LuaState.MultiReturn, 0)).Returns(LuaError.Error);
+            _mockLuaState.Setup(o => o.PCall(0, LuaConstant.MultiReturn, 0)).Returns(LuaError.Error);
 
             _sut.Error();
         }
@@ -45,7 +45,7 @@ namespace dotLuaTest
             _mockLuaState.Setup(o => o.TypeOf(FunctionName)).Returns(LuaType.Function);
             int top = 0;
             _mockLuaState.Setup(o => o.GetTop()).Returns(() => top);
-            _mockLuaState.Setup(o => o.PCall(0, LuaState.MultiReturn, 0)).Returns(LuaError.Ok).Callback(() => top = 1);
+            _mockLuaState.Setup(o => o.PCall(0, LuaConstant.MultiReturn, 0)).Returns(LuaError.Ok).Callback(() => top = 1);
             _mockLuaState.Setup(o => o.StackAt(1)).Returns("expect");
 
             IList<dynamic> actual = _sut.Foo();
@@ -61,7 +61,7 @@ namespace dotLuaTest
             _mockLuaState.Setup(o => o.TypeOf(FunctionName)).Returns(LuaType.Function);
             int top = 0;
             _mockLuaState.Setup(o => o.GetTop()).Returns(() => top);
-            _mockLuaState.Setup(o => o.PCall(1, LuaState.MultiReturn, 0)).Returns(LuaError.Ok).Callback(() => top = 1);
+            _mockLuaState.Setup(o => o.PCall(1, LuaConstant.MultiReturn, 0)).Returns(LuaError.Ok).Callback(() => top = 1);
             _mockLuaState.Setup(o => o.StackAt(1)).Returns("expect");
 
             IList<dynamic> actual = _sut.Foo(12);

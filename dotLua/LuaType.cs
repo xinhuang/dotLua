@@ -31,6 +31,12 @@ namespace dotLua
             case LuaType.String:
                 return luaState.ToString(index);
 
+            case LuaType.Table:
+                return new LuaTable(luaState, index);
+
+            case LuaType.Nil:
+                return null;
+
             default:
                 throw new NotImplementedException(string.Format("Try get {0} of type {1}", index, self));
             }

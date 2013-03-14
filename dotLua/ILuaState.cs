@@ -24,5 +24,13 @@ namespace dotLua
 
         void Push(string value);
         void Push(double value);
+        void GetTable(int index);
+        void Pop();
+
+        int NewRegistryIndex();
+        void SetTable(int index);
+        LuaType Type(int index);
+        void PushNil();
+        void Copy(int source, int dest);
     }
 }

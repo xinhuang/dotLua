@@ -37,6 +37,7 @@ namespace dotLua
             case LuaType.String:
             case LuaType.Number:
             case LuaType.Boolean:
+            case LuaType.Table:
                 result = field.Item2;
                 break;
 
@@ -44,6 +45,7 @@ namespace dotLua
                 throw new NotImplementedException(string.Format("Lua object {0} of type {1} is not supported.",
                                                                 binder.Name, field.Item1));
             }
+
             return true;
         }
 
@@ -91,7 +93,7 @@ namespace dotLua
         {
             _luaState.GetGlobal(functionName);
             args.ForEach(arg => _luaState.Push(arg));
-            LuaError error = _luaState.PCall(args.Length, LuaState.MultiReturn, 0);
+            LuaError error = _luaState.PCall(args.Length, LuaConstant.MultiReturn, 0);
             if (error != LuaError.Ok)
             {
                 throw new InvocationException(error, functionName);

@@ -93,5 +93,11 @@ namespace dotLuaTest
         {
             _sut.raise("Boom!");
         }
+
+        [TestMethod]
+        public void given_query_a_table_should_a_table_object_returns()
+        {
+            Assert.IsNotNull(_sut.GlobalTable);
+        }
     }
 }

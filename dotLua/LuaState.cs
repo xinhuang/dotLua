@@ -6,8 +6,8 @@ namespace dotLua
 {
     internal class LuaState : ILuaState
     {
-        public const int MultiReturn = -1;
         private readonly IntPtr _luaState = luaL_newstate();
+        private int _registryIndex = (int) LuaRegisterIndex.Last;
 
         public static Type NumberType
         {
@@ -52,6 +52,11 @@ namespace dotLua
             return type;
         }
 
+        public LuaType Type(int index)
+        {
+            return lua_type(_luaState, index);
+        }
+
         public bool ToBoolean(int index)
         {
             return lua_toboolean(_luaState, index) != 0;
@@ -75,6 +80,36 @@ namespace dotLua
         public void Push(lua_Number value)
         {
             lua_pushnumber(_luaState, value);
+        }
+
+        public void PushNil()
+        {
+            lua_pushnil(_luaState);
+        }
+
+        public void Copy(int source, int dest)
+        {
+            lua_copy(_luaState, source, dest);
+        }
+
+        public void GetTable(int index)
+        {
+            lua_gettable(_luaState, index);
+        }
+
+        public void Pop()
+        {
+            lua_pop(_luaState, 1);
+        }
+
+        public int NewRegistryIndex()
+        {
+            return ++_registryIndex;
+        }
+
+        public void SetTable(int index)
+        {
+            lua_settable(_luaState, index);
         }
 
         public void Push(string value)
@@ -114,13 +149,25 @@ namespace dotLua
         private static extern LuaError lua_getglobal(IntPtr luaState, string name);
 
         [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern LuaError lua_gettable(IntPtr luaState, int index);
+
+        [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern int lua_gettop(IntPtr luaState);
 
         [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern int lua_settop(IntPtr luaState, int index);
 
         [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void lua_settable(IntPtr luaState, int index);
+
+        [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void lua_pushnumber(IntPtr luaState, lua_Number value);
+
+        [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void lua_pushnil(IntPtr luaState);
+
+        [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void lua_copy(IntPtr luaState, int source, int dest);
 
         [DllImport("Lua.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void lua_pushstring(IntPtr luaState, string value);
@@ -147,7 +194,7 @@ namespace dotLua
             LuaError err = luaL_loadfile(luaState, filename);
             if (err != 0)
                 return err;
-            return lua_pcall(luaState, 0, MultiReturn, 0);
+            return lua_pcall(luaState, 0, LuaConstant.MultiReturn, 0);
         }
 
         private static LuaError lua_pcall(IntPtr luaState, int nArgs, int nRet, int errFunc)
@@ -181,7 +228,7 @@ namespace dotLua
 #if DEBUG
             int top = lua_gettop(_luaState);
             if(top != 0)
-                throw new UnbalanceStackException(top);
+                throw new UnbalanceStackException(-top, StackAt(top).ToString());
 #endif
             Dispose(true);
         }
