@@ -30,4 +30,4 @@ GlobalNumber = 3
 GlobalString = "Good luck~"
 GlobalBoolean = true
 
-GlobalTable = {}
+GlobalTable = { Field = 3.14, }

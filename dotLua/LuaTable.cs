@@ -20,9 +20,9 @@ namespace dotLua
         {
             if (index != -1)
                 throw new NotImplementedException();
-            _luaState.PushNil();
-            _luaState.Copy(-2, -1);
             _luaState.Push(_registryIndex);
+            _luaState.PushNil();
+            _luaState.Copy(-3, -1);
             _luaState.SetTable((int)LuaIndex.Registry);
         }
 
@@ -35,10 +35,21 @@ namespace dotLua
 
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            _luaState.Push(_registryIndex);
-            _luaState.GetTable((int)LuaIndex.Registry);
-            result = _luaState.StackAt(-1);
-            _luaState.Pop();
+            int top = _luaState.GetTop();
+            try
+            {
+                _luaState.Push(_registryIndex);
+                _luaState.GetTable((int)LuaIndex.Registry);
+                var t = _luaState.Type(-1);
+                _luaState.Push(binder.Name);
+                _luaState.GetTable(-2);
+                result = _luaState.StackAt(-1);
+            }
+            finally
+            {
+                _luaState.SetTop(top);
+            }
+
             return true;
         }
     }

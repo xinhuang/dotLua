@@ -104,7 +104,10 @@ namespace dotLua
 
         public int NewRegistryIndex()
         {
-            return ++_registryIndex;
+            checked
+            {
+                return ++_registryIndex;
+            }
         }
 
         public void SetTable(int index)

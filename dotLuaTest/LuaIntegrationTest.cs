@@ -99,5 +99,11 @@ namespace dotLuaTest
         {
             Assert.IsNotNull(_sut.GlobalTable);
         }
+
+        [TestMethod]
+        public void given_query_a_table_field_via_dot_name_should_correct_value_returns()
+        {
+            Assert.AreEqual(3.14, _sut.GlobalTable.Field);
+        }
     }
 }
