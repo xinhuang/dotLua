@@ -103,13 +103,28 @@ namespace dotLuaTest
         [TestMethod]
         public void given_query_a_table_field_via_dot_name_should_correct_value_returns()
         {
-            Assert.AreEqual(3.14, _sut.GlobalTable.Field);
+            using (dynamic globalTable = _sut.GlobalTable)
+            {
+                Assert.AreEqual(3.14, globalTable.Field);
+            }
         }
 
         [TestMethod]
         public void given_query_a_table_field_via_index_should_correct_value_returns()
         {
-            Assert.AreEqual(3.14, _sut.GlobalTable["Field"]);
+            using (dynamic globalTable = _sut.GlobalTable)
+            {
+                Assert.AreEqual(3.14, globalTable["Field"]);
+            }
+        }
+
+        [TestMethod]
+        public void given_calling_a_table_member_function_via_dot_name_should_correct_value_returns_from_function()
+        {
+            using (dynamic globalTable = _sut.GlobalTable)
+            {
+                Assert.AreEqual(6.28, globalTable.Pi_x(2)[0]);
+            }
         }
     }
 }

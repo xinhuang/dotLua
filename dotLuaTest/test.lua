@@ -31,3 +31,7 @@ GlobalString = "Good luck~"
 GlobalBoolean = true
 
 GlobalTable = { Field = 3.14, }
+
+function GlobalTable.Pi_x(times)
+	return 3.14 * times
+end

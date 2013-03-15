@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Dynamic;
+using System.Linq;
 
 namespace dotLua
 {
@@ -32,6 +34,69 @@ namespace dotLua
             result = GetValue(binder.Name);
 
             return true;
+        }
+
+        public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
+        {
+            int top = _luaState.GetTop();
+            try
+            {
+                _luaState.Push(_key);
+                _luaState.GetTable((int)LuaIndex.Registry);
+                _luaState.Push(binder.Name);
+                _luaState.GetTable(-2);
+                result = Call(args);
+            }
+            finally
+            {
+                _luaState.SetTop(top);
+            }
+            return true;
+        }
+
+        private IList<dynamic> Call(dynamic[] args)
+        {
+            int bottom = _luaState.GetTop();
+
+            try
+            {
+                RawCall(args);
+                return GetResults(bottom);
+            }
+            finally
+            {
+                _luaState.SetTop(bottom);
+            }
+        }
+
+        private IList<dynamic> GetResults(int bottom)
+        {
+            int top = _luaState.GetTop();
+
+            int nArgs = top - bottom;
+            List<dynamic> results = null;
+            if (nArgs > 0)
+            {
+                results = GetStackRange(bottom, nArgs);
+            }
+            return results;
+        }
+
+        private void RawCall(dynamic[] args)
+        {
+            args.ForEach(arg => _luaState.Push(arg));
+            LuaError error = _luaState.PCall(args.Length, LuaConstant.MultiReturn, 0);
+            if (error != LuaError.Ok)
+            {
+                throw new InvocationException(error, "Table:MemberFunction");
+            }
+        }
+
+        private List<dynamic> GetStackRange(int index, int n)
+        {
+            var results = new List<dynamic>(n);
+            Enumerable.Range(index + 1, n).ForEach(i => results.Add(_luaState.StackAt(i)));
+            return results;
         }
 
         public override bool TryGetIndex(GetIndexBinder binder, object[] indexes, out object result)
