@@ -52,15 +52,19 @@ namespace dotLua
             return type;
         }
 
-        public int SetRegistry(int index)
+        public string SetRegistry(int index)
         {
-            var luaState = this;
-            int registryIndex = luaState.NewRegistryIndex();
-            luaState.Push(registryIndex);
-            luaState.PushNil();
-            luaState.Copy(-3, index);
-            luaState.SetTable((int)LuaIndex.Registry);
+            string registryIndex = NewRegistryIndex();
+            Push(registryIndex);
+            PushNil();
+            Copy(-3, index);
+            SetTable((int)LuaIndex.Registry);
             return registryIndex;
+        }
+
+        public void ClearRegistry(string index)
+        {
+            throw new NotImplementedException();
         }
 
         public LuaType Type(int index)
@@ -113,11 +117,11 @@ namespace dotLua
             lua_pop(_luaState, 1);
         }
 
-        public int NewRegistryIndex()
+        public string NewRegistryIndex()
         {
             checked
             {
-                return ++_registryIndex;
+                return "REG_" + (++_registryIndex).ToString();
             }
         }
 

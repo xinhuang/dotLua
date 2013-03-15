@@ -1,17 +1,18 @@
-﻿using System.Dynamic;
+﻿using System;
+using System.Dynamic;
 
 namespace dotLua
 {
-    public class LuaTable : DynamicObject
+    public class LuaTable : DynamicObject, IDisposable
     {
         private readonly ILuaState _luaState;
-        private readonly int _registryIndex;
+        private readonly string _key;
 
         public LuaTable(ILuaState luaState, int index)
         {
             _luaState = luaState;
             CheckType(index);
-            _registryIndex = _luaState.SetRegistry(index);
+            _key = _luaState.SetRegistry(index);
         }
 
         private void CheckType(int index)
@@ -26,7 +27,7 @@ namespace dotLua
             int top = _luaState.GetTop();
             try
             {
-                _luaState.Push(_registryIndex);
+                _luaState.Push(_key);
                 _luaState.GetTable((int)LuaIndex.Registry);
                 _luaState.Push(binder.Name);
                 _luaState.GetTable(-2);
@@ -38,6 +39,16 @@ namespace dotLua
             }
 
             return true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        private void Dispose(bool isDisposing)
+        {
+            _luaState.ClearRegistry(_key);
         }
     }
 }
