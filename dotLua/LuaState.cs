@@ -64,7 +64,9 @@ namespace dotLua
 
         public void ClearRegistry(string index)
         {
-            throw new NotImplementedException();
+            Push(index);
+            PushNil();
+            SetTable((int)LuaIndex.Registry);
         }
 
         public LuaType Type(int index)

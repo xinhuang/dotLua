@@ -105,5 +105,11 @@ namespace dotLuaTest
         {
             Assert.AreEqual(3.14, _sut.GlobalTable.Field);
         }
+
+        [TestMethod]
+        public void given_query_a_table_field_via_index_should_correct_value_returns()
+        {
+            Assert.AreEqual(3.14, _sut.GlobalTable["Field"]);
+        }
     }
 }
