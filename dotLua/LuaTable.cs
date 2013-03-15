@@ -1,5 +1,4 @@
-﻿using System;
-using System.Dynamic;
+﻿using System.Dynamic;
 
 namespace dotLua
 {
@@ -11,19 +10,8 @@ namespace dotLua
         public LuaTable(ILuaState luaState, int index)
         {
             _luaState = luaState;
-            _registryIndex = _luaState.NewRegistryIndex();
             CheckType(index);
-            StoreInRegistry(index);
-        }
-
-        private void StoreInRegistry(int index)
-        {
-            if (index != -1)
-                throw new NotImplementedException();
-            _luaState.Push(_registryIndex);
-            _luaState.PushNil();
-            _luaState.Copy(-3, -1);
-            _luaState.SetTable((int)LuaIndex.Registry);
+            _registryIndex = _luaState.SetRegistry(index);
         }
 
         private void CheckType(int index)
@@ -40,7 +28,6 @@ namespace dotLua
             {
                 _luaState.Push(_registryIndex);
                 _luaState.GetTable((int)LuaIndex.Registry);
-                var t = _luaState.Type(-1);
                 _luaState.Push(binder.Name);
                 _luaState.GetTable(-2);
                 result = _luaState.StackAt(-1);

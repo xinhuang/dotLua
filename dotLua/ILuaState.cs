@@ -32,5 +32,7 @@ namespace dotLua
         LuaType Type(int index);
         void PushNil();
         void Copy(int source, int dest);
+
+        int SetRegistry(int index);
     }
 }

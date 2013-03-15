@@ -52,6 +52,17 @@ namespace dotLua
             return type;
         }
 
+        public int SetRegistry(int index)
+        {
+            var luaState = this;
+            int registryIndex = luaState.NewRegistryIndex();
+            luaState.Push(registryIndex);
+            luaState.PushNil();
+            luaState.Copy(-3, index);
+            luaState.SetTable((int)LuaIndex.Registry);
+            return registryIndex;
+        }
+
         public LuaType Type(int index)
         {
             return lua_type(_luaState, index);
