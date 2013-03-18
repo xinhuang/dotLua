@@ -41,11 +41,7 @@ namespace dotLua
             int top = _luaState.GetTop();
             try
             {
-                _luaState.Push(_key);
-                _luaState.GetTable((int)LuaIndex.Registry);
-                _luaState.Push(binder.Name);
-                _luaState.GetTable(-2);
-                result = Call(args);
+                result = Call(binder.Name, args);
             }
             finally
             {
@@ -54,12 +50,17 @@ namespace dotLua
             return true;
         }
 
-        private IList<dynamic> Call(dynamic[] args)
+        private IList<dynamic> Call(string name, dynamic[] args)
         {
+            _luaState.Push(_key);
+            _luaState.GetTable((int)LuaIndex.Registry);
+
             int bottom = _luaState.GetTop();
 
             try
             {
+                _luaState.Push(name);
+                _luaState.GetTable(-2);
                 RawCall(args);
                 return GetResults(bottom);
             }
@@ -130,6 +131,7 @@ namespace dotLua
         private void Dispose(bool isDisposing)
         {
             _luaState.ClearRegistry(_key);
+            GC.SuppressFinalize(this);
         }
 
         ~LuaTable()
