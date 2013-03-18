@@ -56,6 +56,8 @@ namespace dotLua
 
         public List<dynamic> GetStackRange(int index, int n)
         {
+            if (n == 0)
+                return null;
             var results = new List<dynamic>(n);
             Enumerable.Range(index + 1, n).ForEach(i => results.Add(StackAt(i)));
             return results;

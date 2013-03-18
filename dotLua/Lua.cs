@@ -68,25 +68,13 @@ namespace dotLua
             try
             {
                 RawCall(functionName, args);
-                return GetResults(bottom);
+                int nArgs = _luaState.GetTop() - bottom;
+                return _luaState.GetStackRange(bottom, nArgs);
             }
             finally
             {
                 _luaState.SetTop(bottom);
             }
-        }
-
-        private IList<dynamic> GetResults(int bottom)
-        {
-            int top = _luaState.GetTop();
-
-            int nArgs = top - bottom;
-            List<dynamic> results = null;
-            if (nArgs > 0)
-            {
-                results = _luaState.GetStackRange(bottom, nArgs);
-            }
-            return results;
         }
 
         private void RawCall(string functionName, dynamic[] args)
