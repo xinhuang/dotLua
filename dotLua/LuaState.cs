@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using lua_Number = System.Double;
 
@@ -50,6 +52,13 @@ namespace dotLua
             LuaType type = lua_type(_luaState, -1);
             lua_pop(_luaState, 1);
             return type;
+        }
+
+        public List<dynamic> GetStackRange(int index, int n)
+        {
+            var results = new List<dynamic>(n);
+            Enumerable.Range(index + 1, n).ForEach(i => results.Add(StackAt(i)));
+            return results;
         }
 
         public string SetRegistry(int index)

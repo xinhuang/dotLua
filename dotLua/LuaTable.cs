@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
-using System.Linq;
 
 namespace dotLua
 {
@@ -78,7 +77,7 @@ namespace dotLua
             List<dynamic> results = null;
             if (nArgs > 0)
             {
-                results = GetStackRange(bottom, nArgs);
+                results = _luaState.GetStackRange(bottom, nArgs);
             }
             return results;
         }
@@ -91,13 +90,6 @@ namespace dotLua
             {
                 throw new InvocationException(error, "Table:MemberFunction");
             }
-        }
-
-        private List<dynamic> GetStackRange(int index, int n)
-        {
-            var results = new List<dynamic>(n);
-            Enumerable.Range(index + 1, n).ForEach(i => results.Add(_luaState.StackAt(i)));
-            return results;
         }
 
         public override bool TryGetIndex(GetIndexBinder binder, object[] indexes, out object result)

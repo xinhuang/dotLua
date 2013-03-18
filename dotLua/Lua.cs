@@ -84,7 +84,7 @@ namespace dotLua
             List<dynamic> results = null;
             if (nArgs > 0)
             {
-                results = GetStackRange(bottom, nArgs);
+                results = _luaState.GetStackRange(bottom, nArgs);
             }
             return results;
         }

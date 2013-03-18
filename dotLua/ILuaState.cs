@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace dotLua
 {
@@ -36,5 +37,6 @@ namespace dotLua
         string NewRegistryIndex();
         string SetRegistry(int index);
         void ClearRegistry(string index);
+        List<dynamic> GetStackRange(int start, int n);
     }
 }
